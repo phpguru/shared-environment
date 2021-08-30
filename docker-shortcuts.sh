@@ -281,12 +281,15 @@ alias dvr='docker_volume_remove'
 
 ### Miscellaneous ###################################################################
 
-
-function docker_xdebug(){
-    sudo ifconfig lo0 alias 10.254.254.254
+function docker_build_oe(){
+    docker-compose -f docker-compose.tim.yml build
 }
-alias doxd='docker_xdebug'
+alias dboe='docker_build_oe'
 
+function docker_run_oe(){
+    docker-compose -f docker-compose.tim.yml up -d
+}
+alias droe='docker_run_oe'
 
 ### Messages ###################################################################
 
