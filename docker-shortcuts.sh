@@ -98,6 +98,9 @@ drun() {
     "web" )
         docker run -d --name web -e APP=web --link app:app --volumes-from app -p 80:80 -p 443:443 web:latest;;
 
+    "pgadmin4" )
+	docker run --name pgadmin4 -p 81:80 -v /home/geoff/pg:/var/lib/pgadmin/storage --dns=172.17.0.1 --dns=10.90.0.2 --dns=8.8.8.8 -e 'PGADMIN_DEFAULT_EMAIL=geoffrey.hoffman@advinow.com' -e 'PGADMIN_DEFAULT_PASSWORD=P@55w0rd' -d dpage/pgadmin4;;
+
   esac
 
 }
