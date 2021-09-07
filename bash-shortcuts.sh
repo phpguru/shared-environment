@@ -25,5 +25,7 @@ alias pstm='cd ~/Apps/Postman-linux-x86_64-8.11.1/Postman && ./Postman'
 alias gooe='cd ~/Projects/AdviNow/orchestration-engine'
 alias gopat='cd ~/Prohjects/AdviNow/patient-app'
 
+#Open file explorer at location
+alias open='xdg-open'
 
 echo "Shared Environment: Bash Shortcuts loaded."
