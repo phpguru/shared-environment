@@ -153,7 +153,7 @@ function denv ()
         then
         echo "Bringing Up Docker Environment..."
         cd ${DOCKER_HOME}
-        docker-compose up -d
+        docker-compose -f docker-compose.tim.yml up -d
         cd -
         echo "Done."
     fi
@@ -162,7 +162,7 @@ function denv ()
         then
         echo "Taking Down Docker Environment..."
         cd ${DOCKER_HOME}
-        docker-compose down
+        docker-compose -f docker-compose.tim.yml down
         cd -
         echo "Done."
     fi
@@ -292,6 +292,11 @@ function docker_run_oe(){
 alias droe='docker_run_oe'
 
 ### Messages ###################################################################
+
+
+PGADMIN_DEFAULT_EMAIL=webmaster@advinow.com
+PGADMIN_DEFAULT_PASSWORD=P@55w0rd
+
 
 echo "Shared Environment: Docker shortcuts loaded."
 

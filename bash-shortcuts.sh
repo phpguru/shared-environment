@@ -4,10 +4,8 @@
 #
 
 
-
+alias listening='netstat -tulpn | grep LISTEN'
 alias lh='ls -lhart'
-
-alias neo4j='cd ~/Apps/neo4j-desktop-1.4.7 && ./neo4j-desktop-1.4.7-x86_64.AppImage'
 
 
 # OpenVPN3 Shortcuts
@@ -20,12 +18,18 @@ function vpn_down(){
 }
 alias vpnd='vpn_down'
 alias vpnk='sudo pkill openvpn'
-alias pstm='cd ~/Apps/Postman-linux-x86_64-8.11.1/Postman && ./Postman' 
 
+# appimage apps
+alias pstm='cd ~/Apps/Postman-linux-x86_64-8.11.1/Postman && ./Postman' 
+alias neo4j='cd ~/Apps/neo4j-desktop-1.4.7 && ./neo4j-desktop-1.4.7-x86_64.AppImage'
+
+# system navigation
+alias goproj='cd ~/Projects/'
 alias gooe='cd ~/Projects/AdviNow/orchestration-engine'
-alias gopat='cd ~/Prohjects/AdviNow/patient-app'
+alias gopat='cd ~/Projects/AdviNow/patient-app'
 
 #Open file explorer at location
 alias open='xdg-open'
+=======
 
 echo "Shared Environment: Bash Shortcuts loaded."
