@@ -30,6 +30,6 @@ alias gopat='cd ~/Projects/AdviNow/patient-app'
 
 #Open file explorer at location
 alias open='xdg-open'
-=======
 
+# Complete
 echo "Shared Environment: Bash Shortcuts loaded."
