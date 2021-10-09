@@ -12,7 +12,8 @@ The shared environment consists of
 ## Usage
 
 1. Clone the repository to ~/.shenv, 
-1. Add the following code to your ~/.bashrc (Linux) or ~/.bash_profile (Mac)
+1. Set the DOCKER_HOME environment variable to /home/<YOUR-USER>/Projects/AdviNow/docker-development
+1. Add the below code to your ~/.bashrc (Linux) or ~/.bash_profile (Mac)
 1. Reload your terminal or `source ~/.bashrc`
 
 ```

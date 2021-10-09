@@ -153,7 +153,7 @@ function denv ()
         then
         echo "Bringing Up Docker Environment..."
         cd ${DOCKER_HOME}
-        docker-compose -f docker-compose.tim.yml up -d
+        docker-compose up -d
         cd -
         echo "Done."
     fi
@@ -162,7 +162,7 @@ function denv ()
         then
         echo "Taking Down Docker Environment..."
         cd ${DOCKER_HOME}
-        docker-compose -f docker-compose.tim.yml down
+        docker-compose down
         cd -
         echo "Done."
     fi
@@ -174,6 +174,12 @@ function denv ()
     fi
 
 }
+
+function docker_build_up {
+    cd ${DOCKER_HOME}
+    docker-compose up --build --force-recreate -d
+}
+alias dbu='docker_build_up'
 
 ### Images ###################################################################
 

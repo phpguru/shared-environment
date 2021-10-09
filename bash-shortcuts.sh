@@ -19,9 +19,10 @@ function vpn_down(){
 alias vpnd='vpn_down'
 alias vpnk='sudo pkill openvpn'
 
-# appimage apps
-alias pstm='cd ~/Apps/Postman-linux-x86_64-8.11.1/Postman && ./Postman' 
-alias neo4j='cd ~/Apps/neo4j-desktop-1.4.7 && ./neo4j-desktop-1.4.7-x86_64.AppImage'
+# appimage apps - symlink the current version
+alias pstmn='cd ~/Apps/postman-linux && ./postman' 
+alias neo4j='cd ~/Apps/neo4j-desktop && ./neo4j'
+alias shcut='cd ~/Apps/shotcut-linux && ./shotcut'
 
 # system navigation
 alias goproj='cd ~/Projects/'
