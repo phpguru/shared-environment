@@ -37,6 +37,7 @@ done
 ```
 vpnu   // VPN Up
 vpnd   // VPN Down
+vpnr   // VPN reset
 vpns   // VPN Status
 vpnk   // VPN Kill
 ```
