@@ -18,6 +18,9 @@ function vpn_down(){
 }
 alias vpnd='vpn_down'
 alias vpnk='sudo pkill openvpn'
+alias check_dns_servers="systemd-resolve --status | grep 'DNS Servers' -A2"
+alias cdns='check_dns_servers'
+
 
 # appimage apps - symlink the current version
 alias pstmn='cd ~/Apps/postman-linux && ./postman' 
