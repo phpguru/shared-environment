@@ -9,7 +9,7 @@ dls() {
 
 # List All Running Processes
 dll() {
-  docker ps -a
+  docker ps -a --format 'table {{ .ID }}\t{{.Image}}\t{{ .Names }}'
 }
 
 
@@ -74,7 +74,7 @@ dip() {
       echo "Which container? Provide 1 argument."
       return 0
   fi
-   docker inspect --format='{{.NetworkSettings.IPAddress}}' $1
+   docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $1
 }
 
 drun() {
@@ -177,7 +177,9 @@ function denv ()
 
 function docker_build_up {
     cd ${DOCKER_HOME}
+    export COMPOSE_PROJECT_NAME='advinow'
     docker-compose up --build --force-recreate -d
+    dll
 }
 alias dbu='docker_build_up'
 
