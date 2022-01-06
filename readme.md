@@ -24,22 +24,30 @@ do
 done
 ```
 
-## VPN Shortcuts
+Once you've done this, you can enjoy...
 
-1. Make sure you are using [openvpn3](https://openvpn.net/cloud-docs/openvpn-3-client-for-linux/)
-1. Run `mkdir -p ~/.openvpn3`
-1. Download your VPN profile from [here](https://cloudconnect.advinow.net:943/)
-1. Save it into `~/.openvpn3` folder and name it `advinow.conf`
-1. Edit `~/.openvpn3/advinow.conf`
-1. Add the following line `auth-user-pass auth.txt` around line 42
-1. Create the file `~/.openvpn3/auth.txt` and inside it make line 1 your VPN username and line 2 your VPN password
-1. You should now be able to use the following shortcuts
+### Git goodies
 
-```
-vpnu   // VPN Up
-vpnd   // VPN Down
-vpnr   // VPN reset
-vpns   // VPN Status
-vpnk   // VPN Kill
-```
+   - git prompt (shows the branch you are on with coloring)
+   - git completion - enables tab-completion of branch names
 
+### Git aliases
+
+   - `gs` ~ git status
+   - `gp $message` ~ git add . && git commit -m $message && git push
+
+### Docker aliases
+
+   - `dll` ~ docker ps -a -- which containers are running
+   - `dim` ~ docker images -- which images you have
+   - `dsto $container` ~ docker stop $container -- stop a container
+   - `de $container` ~ docker exec -it $container /bin/bash -- docker exec into a container shell
+
+### Bash aliases
+
+   - `lh` ~ ls -lhart - list human readable
+   - `listening` ~ netstat -tulpn | grep LISTEN - which ports are open on your box
+
+... and lots more. Read the provided .sh files for more details.
+
+Please feel free to contribute your own git, docker and bash aliases.

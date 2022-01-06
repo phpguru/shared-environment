@@ -7,9 +7,13 @@ dls() {
   docker ps
 }
 
-# List All Running Processes
+# Compact List All Running Processes
 dll() {
-  docker ps -a --format 'table {{ .ID }}\t{{.Image}}\t{{ .Names }}'
+  docker ps -a --format 'table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}'
+}
+
+dall() {
+  docker ps -a
 }
 
 
