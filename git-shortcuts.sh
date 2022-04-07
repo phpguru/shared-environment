@@ -7,13 +7,18 @@ function git_add_all_and_commit() {
    if [ $# -eq 0 ]
      then
      echo "You must supply a commit message"
-     exit 0
+     return 1
    fi
    git add .
    git commit -m "$1"
 }
 
 function git_add_all_commit_and_push() {
+   if [ $# -eq 0 ]
+     then
+     echo "You must supply a commit message"
+     return 1
+   fi
    git add .
    git commit -m "$1"
    git push
