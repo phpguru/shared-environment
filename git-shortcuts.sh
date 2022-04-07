@@ -7,6 +7,7 @@ function git_add_all_and_commit() {
    if [ $# -eq 0 ]
      then
      echo "You must supply a commit message"
+     exit 0
    fi
    git add .
    git commit -m "$1"
