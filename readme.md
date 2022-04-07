@@ -28,25 +28,25 @@ Once you've done this, you can enjoy...
 
 ### Git goodies
 
-   - git prompt (shows the branch you are on with coloring)
-   - git completion - enables tab-completion of branch names
+   - git prompt -- shows the branch you are on with coloring
+   - git completion -- enables tab-completion of branch names
 
 ### Git aliases
 
-   - `gs` ~ git status
+   - `gs` ~ git status -- what changed
    - `gp $message` ~ git add . && git commit -m $message && git push
 
 ### Docker aliases
 
    - `dll` ~ docker ps -a -- which containers are running
-   - `dim` ~ docker images -- which images you have
+   - `dim` ~ docker images -- which Docker images you have pulled locally
    - `dsto $container` ~ docker stop $container -- stop a container
    - `de $container` ~ docker exec -it $container /bin/bash -- docker exec into a container shell
 
 ### Bash aliases
 
-   - `lh` ~ ls -lhart - list human readable
-   - `listening` ~ netstat -tulpn | grep LISTEN - which ports are open on your box
+   - `lh` ~ ls -lhart -- list human readable
+   - `listening` ~ netstat -tulpn | grep LISTEN -- which ports are open on your box
 
 ... and lots more. Read the provided .sh files for more details.
 
