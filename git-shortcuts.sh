@@ -3,6 +3,15 @@
 # Faster git
 #
 
+function git_add_all_and_commit() {
+   if [ $# -eq 0 ]
+     then
+     echo "You must supply a commit message"
+   fi
+   git add .
+   git commit -m "$1"
+}
+
 function git_add_all_commit_and_push() {
    git add .
    git commit -m "$1"
@@ -19,6 +28,7 @@ alias gs='git status'
 alias gl='git log --pretty --oneline'
 alias gd='git diff'
 alias ga='git_amend_last_commit_message_and_push'
+alias gc='git_add_all_and_commit'
 # Git Last Tag
 alias glt='git fetch && git tag -l | tail -n 1'
 
