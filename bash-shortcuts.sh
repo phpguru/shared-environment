@@ -4,7 +4,30 @@
 #
 
 
-alias listening='netstat -tulpn | grep LISTEN'
+function get_machine_type {
+   unameOut="$(uname -s)"
+   case "${unameOut}" in
+      Linux*)     machine=Linux;;
+      Darwin*)    machine=Mac;;
+      CYGWIN*)    machine=Cygwin;;
+      MINGW*)     machine=MinGw;;
+      *)          machine="UNKNOWN:${unameOut}"
+    esac
+    echo "$machine"
+}
+
+function list_open_ports {
+   unameOut=$(get_machine_type)
+   case "${unameOut}" in
+      Linux*)     netstat -tulpn | grep LISTEN;;
+      Mac*)       lsof -i -P | grep -i "listen";;
+      Cygwin*)    netstat -tulpn | grep LISTEN;;
+      MinGw*)     netstat -tulpn | grep LISTEN;;
+      *)          machine="UNKNOWN:${unameOut}"
+    esac
+}
+
+alias listening='list_open_ports'
 alias lh='ls -lhart'
 
 # appimage apps - symlink the current version
