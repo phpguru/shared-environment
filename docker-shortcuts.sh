@@ -64,11 +64,11 @@ dras() {
 }
 
 # Docker kill all
-docker-killall() {
+docker_killall() {
     dsar
     dras
 }
-alias dka='docker-killall'
+alias dka='docker_killall'
 
 
 # Docker get an ext ip
@@ -103,14 +103,14 @@ drun() {
         docker run -d --name web -e APP=web --link app:app --volumes-from app -p 80:80 -p 443:443 web:latest;;
 
     "pgadmin4" )
-	docker run --name pgadmin4 -p 81:80 -v /home/geoff/pg:/var/lib/pgadmin/storage --dns=172.17.0.1 --dns=10.90.0.2 --dns=8.8.8.8 -e 'PGADMIN_DEFAULT_EMAIL=geoffrey.hoffman@advinow.com' -e 'PGADMIN_DEFAULT_PASSWORD=P@55w0rd' -d dpage/pgadmin4;;
+	docker run --name pgadmin4 -p 81:80 -v /home/geoff/pg:/var/lib/pgadmin/storage --dns=172.17.0.1 --dns=10.90.0.2 --dns=8.8.8.8 -e 'PGADMIN_DEFAULT_EMAIL=ghoffman1@wayfair.com' -e 'PGADMIN_DEFAULT_PASSWORD=P@55w0rd' -d dpage/pgadmin4;;
 
   esac
 
 }
 
 
-docker-enter() {
+docker_enter() {
   if [[ $# == 0 ]]
     then
       echo "Which container? Provide 1 argument."
@@ -119,32 +119,32 @@ docker-enter() {
 
   docker exec -ti -e "COLUMNS=200 LINES=51" $1 bash
 }
-alias de='docker-enter'
+alias de='docker_enter'
 
-docker-mysql() {
+docker_mysql() {
    docker exec -it db sh -c 'exec mysql -uroot -p"${MYSQL_ROOT_PASSWORD}"'
 }
-alias dmysql='docker-mysql'
+alias dmysql='docker_mysql'
 
 # Soft Start Docker app
-function docker-up()
+function docker_up()
 {
     denv up
 }
-alias dup='docker-up'
+alias dup='docker_up'
 
-function docker-down()
+function docker_down()
 {
     denv down
 }
-alias ddn='docker-down'
+alias ddn='docker_down'
 
-function docker-reset()
+function docker_reset()
 {
     docker-down
     docker-up
 }
-alias dre='docker-reset'
+alias dre='docker_reset'
 
 function denv ()
 {
