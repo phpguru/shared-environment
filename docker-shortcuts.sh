@@ -103,7 +103,7 @@ drun() {
         docker run -d --name web -e APP=web --link app:app --volumes-from app -p 80:80 -p 443:443 web:latest;;
 
     "pgadmin4" )
-	docker run --name pgadmin4 -p 81:80 -v /home/geoff/pg:/var/lib/pgadmin/storage --dns=172.17.0.1 --dns=10.90.0.2 --dns=8.8.8.8 -e 'PGADMIN_DEFAULT_EMAIL=ghoffman1@wayfair.com' -e 'PGADMIN_DEFAULT_PASSWORD=P@55w0rd' -d dpage/pgadmin4;;
+	      docker run --name pgadmin4 -p 81:80 -v /home/geoff/pg:/var/lib/pgadmin/storage --dns=172.17.0.1 --dns=10.90.0.2 --dns=8.8.8.8 -e 'PGADMIN_DEFAULT_EMAIL=ghoffman1@wayfair.com' -e 'PGADMIN_DEFAULT_PASSWORD=P@55w0rd' -d dpage/pgadmin4;;
 
   esac
 
@@ -181,7 +181,7 @@ function denv ()
 
 function docker_build_up {
     cd ${DOCKER_HOME}
-    export COMPOSE_PROJECT_NAME='advinow'
+    export COMPOSE_PROJECT_NAME='dolceclock'
     docker-compose up --build --force-recreate -d
     dll
 }
@@ -281,6 +281,18 @@ function docker_volume_remove(){
 alias dvr='docker_volume_remove'
 
 
+## Networking ##################################################################
+
+function docker_show_ports() {
+    if [ $# -eq 0 ]; then
+        echo "docker_show_ports requires 1 arg"
+        return 1
+    else
+       docker inspect --format='{{range $p, $conf := .Config.ExposedPorts}} {{$p}} {{end}}' $1
+    fi
+}
+alias dsp='docker_show_ports'
+
 ## Dockerized Apps #############################################################
 
 # Run Composer from a container
@@ -306,7 +318,7 @@ alias droe='docker_run_oe'
 ### Messages ###################################################################
 
 
-PGADMIN_DEFAULT_EMAIL=webmaster@advinow.com
+PGADMIN_DEFAULT_EMAIL=webmaster@localhost
 PGADMIN_DEFAULT_PASSWORD=P@55w0rd
 
 

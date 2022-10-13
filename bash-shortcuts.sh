@@ -27,6 +27,13 @@ function list_open_ports {
     esac
 }
 
+function better_clear() {
+    source ~/.bash_profile
+    clear
+}
+alias c='better_clear'
+
+
 alias listening='list_open_ports'
 alias lh='ls -lhart'
 
@@ -42,6 +49,12 @@ alias gopat='cd ~/Projects/AdviNow/patient-app'
 
 #Open file explorer at location
 alias open='xdg-open'
+
+alias ll='ls -la'
+alias llh='ls -lhart'
+
+
+
 
 # Complete
 echo "Shared Environment: Bash Shortcuts loaded."
