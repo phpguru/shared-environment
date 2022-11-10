@@ -1,4 +1,8 @@
 
+function docker_restart(){
+    osascript -e 'quit app "Docker"'
+    open -a Docker
+}
 
 ### Containers ###################################################################
 
@@ -9,7 +13,7 @@ dls() {
 
 # Compact List All Running Processes
 dll() {
-  docker ps -a --format 'table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}'
+  docker ps -a --format 'table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}\t{{ .Ports }}'
 }
 
 dall() {
@@ -46,6 +50,17 @@ drm() {
   fi
   docker rm $1
 }
+
+docker_take_down(){
+  if [[ $# == 0 ]]
+    then
+      echo "Which container? Provide 1 argument."
+      return 0
+  fi
+  docker stop $1
+  docker rm $1
+}
+alias dtd='docker_take_down'
 
 # Docker stop all running
 dsar() {
@@ -280,6 +295,16 @@ function docker_volume_remove(){
 }
 alias dvr='docker_volume_remove'
 
+function docker_volume_remove_dangling(){
+    docker volume ls -f "dangling=true" | xargs docker volume rm
+}
+alias dvrd='docker_volume_remove_dangling'
+
+function docker_volume_prune(){
+    docker volume prune
+}
+alias dvp='docker_volume_prune'
+
 
 ## Networking ##################################################################
 
@@ -314,6 +339,17 @@ function docker_run_oe(){
     docker-compose -f docker-compose.tim.yml up -d
 }
 alias droe='docker_run_oe'
+
+function docker_logs(){
+    docker logs $1
+}
+alias dlg='docker_logs'
+
+function docker_logs_follow(){
+    docker logs $1 --follow
+}
+alias dlf='docker_logs_follow'
+
 
 ### Messages ###################################################################
 

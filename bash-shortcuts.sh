@@ -37,21 +37,28 @@ alias c='better_clear'
 alias listening='list_open_ports'
 alias lh='ls -lhart'
 
-# appimage apps - symlink the current version
-alias pstmn='cd ~/Apps/postman-linux && ./postman &' 
-alias neo4j='cd ~/Apps/neo4j-desktop && ./neo4j &'
-alias shcut='cd ~/Apps/shotcut-linux && ./shotcut &'
-
 # system navigation
 alias goproj='cd ~/Projects/'
-alias gooe='cd ~/Projects/AdviNow/orchestration-engine'
-alias gopat='cd ~/Projects/AdviNow/patient-app'
-
-#Open file explorer at location
-alias open='xdg-open'
+alias gosoe='cd ~/Projects/spoton-environment'
 
 alias ll='ls -la'
 alias llh='ls -lhart'
+
+# OpenSSL Commands
+function openssl_generate_key() {
+    openssl genrsa -out "$1.key" 4096
+}
+alias sslkey='openssl_generate_key'
+
+function openssl_generate_csr() {
+    openssl req -new -key "$1.key" -out "$1.csr" -sha256 -config "$1.cnf"
+}
+alias sslcsr='openssl_generate_csr'
+
+function openssl_generate_self_signed_certificate() {
+    openssl x509 -req -days 3650 -sha256 -in "$1.csr" -CA "${ROOT_CA_CRT}" -CAkey "${ROOT_CA_KEY}" -CAcreateserial -out "$1.crt" -extfile "$1.cnf" -extensions v3_req
+}
+alias sslcrt='openssl_generate_self_signed_certificate'
 
 
 

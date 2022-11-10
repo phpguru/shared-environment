@@ -41,28 +41,68 @@ alias glt='git fetch && git tag -l | tail -n 1'
 # git sync
 function git_sync(){
     git fetch
-    git checkout development
+    git checkout dev
     git pull
-    git checkout master
+    git checkout main
     git pull
-    git checkout development
+    git checkout dev
+    git merge main
 }
+alias gsy='git_sync'
 
 # Git Diff pilot
-function git_diff_pilot(){
+function git_diff_branch(){
     git_sync
-    git log --pretty --oneline development..master
+    git log --pretty --oneline $1..main
 }
-alias gdpilot='git_diff_pilot'
+alias gdpilot='git_diff_branch'
 
 # Git Diff prod
 function git_diff_prod(){
     git_sync
     tag = `glt`
-    git log --pretty --oneline master..$tag
+    git log --pretty --oneline main..$tag
 }
 alias gdprod='git fetch && git log --pretty --oneline master..$(glt)'
 
+# Git branch am I on?
+function git_branch_current(){
+    git branch -a | grep '*'
+}
+alias gbr='git_branch_current'
+
+function git_branch_list_all(){
+    git branch -a
+}
+alias gbra='git_branch_list_all'
+
+# Git Checkout 
+function git_checkout_branch(){
+    git checkout $1
+}
+alias gco='git_checkout_branch'
+
+# Git Checkout -b
+function git_create_branch(){
+    git checkout -b $1
+}
+alias gcb='git_create_branch'
+
+function git_pull(){
+    git fetch
+    git pull
+}
+alias gpu='git_pull'
+
+function git_branch_prune(){
+    git fetch -p ; git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs git branch -d
+}
+alias gpr='git_branch_prune'
+
+function git_checkout_new_branch(){
+    git checkout -b $1
+}
+alias gcb='git_checkout_new_branch'
 
 
 echo "Shared Environment: Git Shortcuts loaded."
