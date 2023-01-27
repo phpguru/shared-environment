@@ -256,6 +256,7 @@ function docker_remove_all_none_images()
    docker images | grep '<none>' | awk -F' ' '{print $3}' | xargs docker rmi
 }
 alias dimrma='docker_remove_all_none_images'
+alias drani='docker_remove_all_none_images'
 
 ### Containers ################################################################
 

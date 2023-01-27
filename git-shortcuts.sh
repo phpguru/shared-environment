@@ -76,6 +76,16 @@ function git_branch_list_all(){
 }
 alias gbra='git_branch_list_all'
 
+function git_branch_delete() {
+   if [ $# -eq 0 ]
+     then
+     echo "You must supply a branch to delete"
+     return 1
+   fi
+   git branch -D $1
+}
+alias 'gbd'=git_branch_delete
+
 # Git Checkout 
 function git_checkout_branch(){
     git checkout $1
@@ -103,6 +113,11 @@ function git_checkout_new_branch(){
     git checkout -b $1
 }
 alias gcb='git_checkout_new_branch'
+
+function git_search_for(){
+   git rev-list --all | xargs git grep "$1"
+}
+
 
 
 echo "Shared Environment: Git Shortcuts loaded."
