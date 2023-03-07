@@ -11,10 +11,10 @@ function colima_stop() {
 alias cstop='colima_stop'
 
 function is_colima_running() {
-    cpid=`ps aux | pgrep colima`
+    cpid=`ps -ef | pgrep colima | awk '{print $2}' | head -n 1`
     re='^[0-9]+$'
     if ! [[ $cpid =~ $re ]] ; then
-        dpid=`ps aux | grep docker`
+        dpid=`ps -ef | grep docker | awk '{print $2}' | head -n 1`
         if ! [[ $dpid =~ $re ]] ; then
             echo "Neither Docker or Colima is running"
         else
