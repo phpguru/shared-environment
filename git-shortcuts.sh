@@ -109,6 +109,11 @@ function git_branch_prune(){
 }
 alias gpr='git_branch_prune'
 
+function git_branch_prune_force(){
+    git fetch -p ; git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs git branch -D
+}
+alias gprf='git_branch_prune_force'
+
 function git_checkout_new_branch(){
     git checkout -b $1
 }
