@@ -311,7 +311,8 @@ alias dvp='docker_volume_prune'
 
 function docker_show_ports() {
     if [ $# -eq 0 ]; then
-        echo "docker_show_ports requires 1 arg"
+        echo "   error: docker_show_ports requires 1 arg"
+        echo "   usage: dsp <container>"
         return 1
     else
        docker inspect --format='{{range $p, $conf := .Config.ExposedPorts}} {{$p}} {{end}}' $1
@@ -350,6 +351,18 @@ function docker_logs_follow(){
     docker logs $1 --follow
 }
 alias dlf='docker_logs_follow'
+
+function docker_logs_grep(){
+    if [ $# -ne 2 ]; then
+        echo "   error: docker_logs_grep requires 2 args"
+        echo "   usage: dlgr <container> <grepfor>"
+        return 1
+    else
+       docker logs $1 2>&1 | grep $2
+    fi
+}
+alias dlgr='docker_logs_grep'
+
 
 
 ### Messages ###################################################################
