@@ -7,6 +7,7 @@ alias kcv='k config view'
 alias kcgc='k config get-contexts'
 alias kccc='k config current-context'
 alias kgs='k get services'
+alias kgn='k get namespaces'
 alias kgpa='k get pods --all-namespaces'
 alias kgpo='k get pods -o wide'
 
@@ -18,6 +19,19 @@ function kubectl_config_use_context() {
     kubectl config use-context $1
 }
 alias kcuc='kubectl_config_use_context'
+
+function kubectl_namespace_pods() {
+    kubectl --namespace $1 get pods
+}
+alias knp='kubectl_namespace_pods'
+
+function kubectl_exec_namespace_pod() {
+    kubectl --namespace $1 exec -it $2 -- bash
+}
+alias ke='kubectl_exec_namespace_pod'
+
+
+
 
 # K8s Staging
 alias k8stg='tsh login --auth=okta --proxy=tele.spoton.sh staging'
