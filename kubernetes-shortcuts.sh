@@ -21,11 +21,19 @@ function kubectl_config_use_context() {
 alias kcuc='kubectl_config_use_context'
 
 function kubectl_namespace_pods() {
+    if [[ $# -eq 0 ]]; then
+        echo "You must supply a namespace."
+        return 1
+    fi
     kubectl --namespace $1 get pods
 }
 alias knp='kubectl_namespace_pods'
 
 function kubectl_exec_namespace_pod() {
+    if [[ $# -eq 0 ]]; then
+        echo "You must supply a namespace and a pod."
+        return 1
+    fi
     kubectl --namespace $1 exec -it $2 -- bash
 }
 alias ke='kubectl_exec_namespace_pod'
