@@ -60,6 +60,10 @@ function openssl_generate_self_signed_certificate() {
 }
 alias sslcrt='openssl_generate_self_signed_certificate'
 
+function what_is_my_ip() {
+    wget -qO- ifconfig.me
+}
+alias myip='what_is_my_ip'
 
 
 
