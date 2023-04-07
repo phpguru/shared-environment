@@ -364,6 +364,32 @@ function docker_logs_grep(){
 alias dlgr='docker_logs_grep'
 
 
+# From https://forums.docker.com/t/how-can-i-list-tags-for-a-repository/32577/8
+function docker_list_all_tags() { 
+    local repo=${1} 
+    local page_size=${2:-100} 
+    [ -z "${repo}" ] && echo "Usage: listTags <repoName> [page_size]" 1>&2 && return 1 
+    local base_url="https://registry.hub.docker.com/api/content/v1/repositories/public/library/${repo}/tags" 
+     
+    local page=1 
+    local res=$(curl "${base_url}?page_size=${page_size}&page=${page}" 2>/dev/null) 
+    local tags=$(echo ${res} | jq --raw-output '.results[].name') 
+    local all_tags="${tags}" 
+ 
+    local tag_count=$(echo ${res} | jq '.count')   
+ 
+    ((page_count=(${tag_count}+${page_size}-1)/${page_size}))  # ceil(tag_count / page_size) 
+ 
+    for page in $(seq 2 $page_count); do 
+        tags=$(curl "${base_url}?page_size=${page_size}&page=${page}" 2>/dev/null | jq --raw-output '.results[].name') 
+        all_tags="${all_tags}${tags}" 
+    done 
+ 
+    echo "${all_tags}" | sort 
+} 
+alias dlat='docker_list_all_tags'
+
+
 
 ### Messages ###################################################################
 
