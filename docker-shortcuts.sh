@@ -21,6 +21,8 @@ dall() {
 }
 
 
+
+
 # Docker stop
 dsto() {
   if [[ $# == 0 ]]
@@ -308,6 +310,17 @@ alias dvp='docker_volume_prune'
 
 
 ## Networking ##################################################################
+
+function docker_network_list(){
+    docker network list
+}
+alias dnl='docker_network_list'
+
+function docker_network_remove(){
+    docker network rm $1
+}
+alias dnr='docker_network_remove'
+
 
 function docker_show_ports() {
     if [ $# -eq 0 ]; then
