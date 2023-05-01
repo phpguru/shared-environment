@@ -15,6 +15,7 @@ function get_machine_type {
     esac
     echo "$machine"
 }
+alias mtype='get_machine_type'
 
 function list_open_ports {
    unameOut=$(get_machine_type)
@@ -26,21 +27,20 @@ function list_open_ports {
       *)          machine="UNKNOWN:${unameOut}"
     esac
 }
+alias listening='list_open_ports'
 
 function better_clear() {
-    source ~/.bash_profile
+    source ~/.bashrc
     clear
 }
 alias c='better_clear'
-
-
-alias listening='list_open_ports'
 alias lh='ls -lhart'
 
 # system navigation
-alias goproj='cd ~/Projects/'
-alias gosoe='cd ~/Projects/spoton-environment'
-
+alias goproj='cd ~/projects/'
+alias gosoe='cd ${SPOTON_ENV_DIR}'
+alias gse='cd ${SPOTON_ENV_DIR}'
+alias csp='cd ${SPOTON_ENV_DIR}'
 alias ll='ls -la'
 alias llh='ls -lhart'
 
@@ -64,7 +64,6 @@ function what_is_my_ip() {
     wget -qO- ifconfig.me
 }
 alias myip='what_is_my_ip'
-
 
 
 # Complete
