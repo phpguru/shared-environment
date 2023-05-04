@@ -32,9 +32,11 @@ function git_amend_last_commit_message_and_push() {
 alias gp='git_add_all_commit_and_push'
 alias gs='git status'
 alias gl='git log --pretty --oneline'
+alias gln='gl -n $1'
 alias gd='git diff'
 alias ga='git_amend_last_commit_message_and_push'
 alias gc='git_add_all_and_commit'
+
 # Git Last Tag
 alias glt='git fetch && git tag -l | tail -n 1'
 
