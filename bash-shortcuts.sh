@@ -31,6 +31,7 @@ alias listening='list_open_ports'
 
 function better_clear() {
     source ~/.bashrc
+    source ~/.bash_profile
     clear
 }
 alias c='better_clear'
