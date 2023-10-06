@@ -41,12 +41,5 @@ alias ke='kubectl_exec_namespace_pod'
 
 
 
-# K8s Staging
-alias k8stg='tsh login --auth=okta --proxy=tele.spoton.sh staging'
-
-# K8s Production
-alias k8sprd='tsh login --auth=okta --proxy=tele.spoton.sh prod'
-
-
 echo "Shared Environment: Kubnetes shortcuts loaded."
 

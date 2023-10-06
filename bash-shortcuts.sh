@@ -39,9 +39,6 @@ alias lh='ls -lhart'
 
 # system navigation
 alias goproj='cd ~/projects/'
-alias gosoe='cd ${SPOTON_ENV_DIR}'
-alias gse='cd ${SPOTON_ENV_DIR}'
-alias csp='cd ${SPOTON_ENV_DIR}'
 alias ll='ls -la'
 alias llh='ls -lhart'
 
@@ -65,6 +62,11 @@ function what_is_my_ip() {
     wget -qO- ifconfig.me
 }
 alias myip='what_is_my_ip'
+
+function smarter_grep() {
+    grep -ir --exclude-dir=".git" $1 $2
+}
+alias sgrep='smarter_grep'
 
 
 # Complete
