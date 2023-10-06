@@ -12,10 +12,11 @@ The shared environment consists of
 ## Usage
 
 1. Clone the repository to ~/.shenv, 
-1. Set PROJECT_HOME to point to your projects folder, e.g. /home/<YOUR_USER>/Projects 
-1. Set the DOCKER_HOME environment variable to /home/<YOUR-USER>/Projects/AdviNow/docker-development
-1. Add the below code to your ~/.bashrc (Linux) or ~/.bash_profile (Mac)
+1. Set PROJECT_HOME to point to your projects folder, e.g. /home/<YOUR-USER>/Projects 
+1. Set the DOCKER_HOME environment variable to /home/<YOUR-USER>/Projects/<YOUR-PROJECT>
+1. Add the below code to your ~/.bashrc (Linux) or ~/.bash_profile (Mac) or ~/.zshrc (M1/M2 Mac)
 1. Reload your terminal or `source ~/.bashrc`
+1. Once this is done, you can forever more just use the 'c' alias (see better_clear)
 
 ```
 for file in ~/.shenv/*.sh;
@@ -51,3 +52,21 @@ Once you've done this, you can enjoy...
 ... and lots more. Read the provided .sh files for more details.
 
 Please feel free to contribute your own git, docker and bash aliases.
+
+### Notes
+
+This works in conjunction with/on top of 
+[oh my zsh](https://ohmyz.sh/) 
+or the port of oh my zsh to bash [oh my bash](https://github.com/ohmybash/oh-my-bash)
+to augment the shortcuts and customizations that they provide. I strongly encourage 
+checking those out first, since a thousand people way smarter than me
+have contributed there, and the feature set is very large. I wrote these shortcuts
+well before someone pointed me to oh-my-whatever. Oddly, I found many of the Docker shortcuts
+I made are not present in those. 
+
+The scripts and add-ons in this repo have not been well tested on `zsh`.
+If you find a bug in zsh, please provide a PR.
+
+There are some old, residual, opinionated stuff lingering in here from some of my 
+past projects with PHP, MySQL, Redis and so on. If it bugs you, send a PR.
+

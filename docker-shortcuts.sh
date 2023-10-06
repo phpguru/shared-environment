@@ -133,10 +133,15 @@ docker_enter() {
       echo "Which container? Provide 1 argument."
       return 0
   fi
-
-  docker exec -ti -e "COLUMNS=200 LINES=51" $1 bash
+  if [[ $# == 2 ]]
+    then
+    docker exec -ti -e "COLUMNS=200 LINES=51" $1 $2
+  else
+    docker exec -ti -e "COLUMNS=200 LINES=51" $1 bash
+  fi
 }
 alias de='docker_enter'
+
 
 docker_mysql() {
    docker exec -it db sh -c 'exec mysql -uroot -p"${MYSQL_ROOT_PASSWORD}"'
