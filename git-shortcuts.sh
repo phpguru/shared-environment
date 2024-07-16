@@ -124,7 +124,73 @@ alias gcb='git_checkout_new_branch'
 function git_search_for(){
    git rev-list --all | xargs git grep "$1"
 }
+alias gsf='git_search_for'
 
+function git_merge_main_into_current() {
 
+    # Step 1: Get the current branch name
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+    # Step 2: Check for uncommitted changes
+    if [[ -n $(git status --porcelain) ]]; then
+        git status -s
+        sleep 1
+        echo "The branch you are on has changes. Commit them first."
+        return 1
+    fi
+
+    # Step 3: Store the current branch name in a variable (already done above as $current_branch)
+
+    # Step 4: Define the main branch name
+    main_branch=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
+
+    # Step 5: Switch to the main branch
+    git checkout $main_branch
+
+    # Step 6: Pull the latest changes from the main branch
+    git pull
+
+    # Step 7: Switch back to the current branch
+    git checkout $current_branch
+
+    # Step 8: Merge the main branch into the current branch
+    git merge $main_branch
+
+    # Step 9: Check for merge conflicts
+    merge_status=$?
+    if [[ $merge_status -ne 0 ]]; then
+        echo "Merging $default_branch into $current_branch resulted in one or more merge conflicts. Please fix them and commit."
+        return 1
+    fi
+
+    # Step 10: Commit changes
+    git commit -m "Merged $default_branch into $current_branch to stay up-to-date with upstream changes."
+
+    # Step 11: Push to remote
+    git push
+    
+    # Step 12: Print the URL for creating a pull request
+    remote_url=$(git config --get remote.origin.url)
+    if [[ $remote_url == git@github.com:* ]]; then
+        REPO_OWNER=$(echo $remote_url | sed -E 's/git@github.com:(.*)\/(.*)\.git/\1/')
+        REPO_NAME=$(echo $remote_url | sed -E 's/git@github.com:(.*)\/(.*)\.git/\2/')
+    else
+        REPO_OWNER=$(echo $remote_url | sed -E 's/https:\/\/github.com\/(.*)\/(.*)\.git/\1/')
+        REPO_NAME=$(echo $remote_url | sed -E 's/https:\/\/github.com\/(.*)\/(.*)\.git/\2/')
+    fi
+
+    pr_check_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+        "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/pulls?head=$REPO_OWNER:$current_branch")
+
+    existing_pr=$(echo $pr_check_response | jq '.[0] | select(.state == "open")')
+    if [[ -n "$existing_pr" ]]; then
+        pr_url=$(echo $existing_pr | jq -r '.html_url')
+        echo "An open pull request already exists for this branch: $pr_url"
+    else
+        echo "No existing pull request found. You can create one by visiting: https://github.com/$REPO_OWNER/$REPO_NAME/pull/new/$current_branch"
+    fi
+
+}
+alias gmm='git_merge_main_into_current'
 
 echo "Shared Environment: Git Shortcuts loaded."
