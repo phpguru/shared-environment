@@ -328,4 +328,39 @@ git_manage_tags_with_pagination() {
 alias gtmgr=git_manage_tags_with_pagination
 
 
+
+
+function git_tag_cleanser() {
+    echo "Fetching remote tags..."
+    git fetch --tags
+
+    echo "Comparing local and remote tags for conflicts..."
+    git ls-remote --tags origin > remote_tags.txt
+
+    for tag in $(git tag); do
+        local_sha=$(git rev-list -n 1 "$tag")
+        remote_sha=$(grep "refs/tags/$tag" remote_tags.txt | awk '{print $1}')
+
+        if [[ "$local_sha" != "$remote_sha" && -n "$remote_sha" ]]; then
+            echo "Deleting conflicting local tag: $tag (local SHA: $local_sha, remote SHA: $remote_sha)"
+            git tag -d "$tag"
+        fi
+    done
+
+    echo "Refetching tags to ensure synchronization..."
+    git fetch --tags
+
+    echo "Local tags are now synchronized with remote."
+}
+alias gtcln=git_tag_cleanser
+
+
+
+
+
+
+
+
+
+
 echo "Shared Environment: Git Shortcuts loaded."
