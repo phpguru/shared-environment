@@ -227,8 +227,6 @@ git_suggest_next_tag() {
         exit 1
     fi
 }
-
-# Run the function
 alias gtsnt=git_suggest_next_tag
 
 # Function to manage Git tags with pagination
@@ -327,8 +325,6 @@ git_manage_tags_with_pagination() {
         esac
     done
 }
-
-# Alias the function
 alias gtmgr=git_manage_tags_with_pagination
 
 
