@@ -193,4 +193,143 @@ function git_merge_main_into_current() {
 }
 alias gmm='git_merge_main_into_current'
 
+
+# Function to find the most recent tag matching a pattern and suggest the next SemVer tag
+git_suggest_next_tag() {
+    # Read the wildcard pattern from the user
+    echo "Enter the wildcard pattern to match tags (e.g., '*-staging'): "
+    read -r pattern
+
+    # Find the most recent tag matching the pattern
+    recent_tag=$(git tag -l "$pattern" --sort=-v:refname | head -n 1)
+
+    if [[ -z "$recent_tag" ]]; then
+        echo "No tags found matching pattern '$pattern'."
+        exit 1
+    fi
+
+    echo "Most recent tag matching pattern: $recent_tag"
+
+    # Extract the version number and suffix
+    if [[ "$recent_tag" =~ ^(v[0-9]+)\.([0-9]+)\.([0-9]+)(.*)$ ]]; then
+        major=${BASH_REMATCH[1]}
+        minor=${BASH_REMATCH[2]}
+        patch=${BASH_REMATCH[3]}
+        suffix=${BASH_REMATCH[4]}
+
+        # Increment the patch version
+        next_patch=$((patch + 1))
+        suggested_tag="${major}.${minor}.${next_patch}${suffix}"
+        
+        echo "Suggested next tag: $suggested_tag"
+    else
+        echo "Error: Unable to parse the tag '$recent_tag' using Semantic Versioning."
+        exit 1
+    fi
+}
+
+# Run the function
+alias gtsnt=git_suggest_next_tag
+
+# Function to manage Git tags with pagination
+git_manage_tags_with_pagination() {
+    # Read the wildcard pattern from the user
+    echo "Enter the wildcard pattern to match tags (e.g., 'v*'): "
+    read -r pattern
+
+    # Find matching tags
+    matching_tags=($(git tag -l "$pattern"))
+    total_tags=${#matching_tags[@]}
+
+    if [[ $total_tags -eq 0 ]]; then
+        echo "No tags found matching pattern '$pattern'."
+        exit 1
+    fi
+
+    # Pagination setup
+    page_size=10
+    current_page=0
+    total_pages=$(( (total_tags + page_size - 1) / page_size ))  # Calculate total pages
+
+    show_page() {
+        echo
+        echo "Page $((current_page + 1)) of $total_pages"
+        echo "---------------------------------------"
+
+        start=$((current_page * page_size))
+        end=$((start + page_size - 1))
+        if ((end >= total_tags)); then end=$((total_tags - 1)); fi
+
+        for i in $(seq $start $end); do
+            tag=${matching_tags[$i]}
+            tag_date=$(git log -1 --format="%ai" "$tag")
+            echo "$((i + 1))) $tag - Created on: $tag_date"
+        done
+
+        echo
+        echo "[N] Next Page | [P] Previous Page | [D] Delete Tag | [Q] Quit"
+        echo "Choose an option:"
+    }
+
+    delete_tag() {
+        echo "Enter the number corresponding to the tag you want to delete:"
+        read -r choice
+        if [[ "$choice" =~ ^[0-9]+$ && $choice -ge 1 && $choice -le $total_tags ]]; then
+            tag_to_delete=${matching_tags[$((choice - 1))]}
+            echo "Deleting tag '$tag_to_delete'..."
+            git tag -d "$tag_to_delete"  # Delete the local tag
+            git push origin --delete "$tag_to_delete"  # Delete the remote tag (if applicable)
+            echo "Tag '$tag_to_delete' deleted locally and remotely (if it existed)."
+
+            # Remove the tag from the array and adjust indices
+            unset 'matching_tags[$((choice - 1))]'
+            matching_tags=("${matching_tags[@]}")  # Rebuild the array
+            total_tags=${#matching_tags[@]}
+            total_pages=$(( (total_tags + page_size - 1) / page_size ))
+        else
+            echo "Invalid choice. Please try again."
+        fi
+    }
+
+    # Main loop
+    while true; do
+        show_page
+        read -r option
+
+        case $option in
+        N|n)
+            if ((current_page < total_pages - 1)); then
+                ((current_page++))
+            else
+                echo "You are already on the last page."
+            fi
+            ;;
+        P|p)
+            if ((current_page > 0)); then
+                ((current_page--))
+            else
+                echo "You are already on the first page."
+            fi
+            ;;
+        D|d)
+            delete_tag
+            if ((current_page >= total_pages)); then
+                current_page=$((total_pages - 1))  # Adjust if we delete the last tag on the last page
+            fi
+            ;;
+        Q|q)
+            echo "Exiting."
+            break
+            ;;
+        *)
+            echo "Invalid option. Please choose N, P, D, or Q."
+            ;;
+        esac
+    done
+}
+
+# Alias the function
+alias gtmgr=git_manage_tags_with_pagination
+
+
 echo "Shared Environment: Git Shortcuts loaded."

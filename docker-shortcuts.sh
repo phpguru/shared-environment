@@ -12,9 +12,54 @@ dls() {
 }
 
 # Compact List All Running Processes
+#dll() {
+#  docker ps -a --format 'table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}\t{{ .Ports }}'
+#}
+
+
+
 dll() {
-  docker ps -a --format 'table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}\t{{ .Ports }}'
+  docker ps -a --format '{{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}\t{{ .Ports }}' | 
+  awk '
+  BEGIN {
+    ecrCounter = 1;
+  }
+  {
+    image = $2;
+    ports = $5;
+
+    # Process image to replace ECR URLs
+    if (match(image, /[0-9]+\.dkr\.ecr\.[^\/]+\//)) {
+      ecrRepo = substr(image, RSTART, RLENGTH-1);
+      ecrImage = substr(image, RSTART + RLENGTH);
+      if (!(ecrRepo in ecrMap)) {
+        ecrMap[ecrRepo] = "<ECR" ecrCounter ">";
+        ecrCounter++;
+      }
+      $2 = ecrMap[ecrRepo] "/" ecrImage;
+    }
+
+    # Process ports to simplify the format
+    n = split(ports, portArray, ", ");
+    simplifiedPorts = "";
+    for (i = 1; i <= n; i++) {
+      sub(/0.0.0.0:/, "", portArray[i]);
+      sub(/->/, "/", portArray[i]);
+      simplifiedPorts = simplifiedPorts (simplifiedPorts == "" ? "" : ",") portArray[i];
+    }
+    $5 = simplifiedPorts;
+
+    print;
+  }
+  END {
+    for (ecrRepo in ecrMap) {
+      printf "%s\t%s\n", ecrMap[ecrRepo], ecrRepo;
+    }
+  }
+  ' OFS='\t' | column -t -s $'\t'
 }
+
+
 
 dall() {
   docker ps -a
