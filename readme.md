@@ -11,7 +11,7 @@ The shared environment consists of
 
 ## Usage
 
-1. Clone the repository to ~/.shenv, 
+1. Clone the repository:  `cd ~ && git clone git@github.com/phpguru/shared-environment ~/.shenv`, 
 1. Set PROJECT_HOME to point to your projects folder, e.g. /home/<YOUR-USER>/Projects 
 1. Set the DOCKER_HOME environment variable to /home/<YOUR-USER>/Projects/<YOUR-PROJECT>
 1. Add the below code to your ~/.bashrc (Linux) or ~/.bash_profile (Mac) or ~/.zshrc (M1/M2 Mac)
