@@ -356,6 +356,28 @@ alias gtcln=git_tag_cleanser
 
 
 
+function git_log_issue_search() {
+
+    # Check if both arguments are provided
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: $0 <ticket_prefix> <num_commits>"
+        exit 1
+    fi
+
+    TICKET_PREFIX=$1
+    NUM_COMMITS=$2
+
+    # Get the git log, extract ticket numbers, sort and remove duplicates
+    git log --pretty=oneline -n "$NUM_COMMITS" | \
+    grep -oE "$TICKET_PREFIX-[0-9]+" | \
+    sort -uV | while read -r ticket; do
+        echo "$ticket"
+    done
+    echo
+}
+alias glis=git_log_issue_search
+
+
 
 
 
