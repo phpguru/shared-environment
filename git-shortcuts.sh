@@ -378,6 +378,10 @@ function git_log_issue_search() {
 alias glis=git_log_issue_search
 
 
+alias gcm='git checkout main'
+alias gcmr='git checkout master'
+
+
 
 
 
