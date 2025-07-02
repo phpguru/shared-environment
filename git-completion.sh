@@ -3494,10 +3494,6 @@ __gitk_main ()
 	__git_complete_revlist
 }
 
-if [[ -n ${ZSH_VERSION-} && -z ${GIT_SOURCING_ZSH_COMPLETION-} ]]; then
-	echo "ERROR: this script is obsolete, please see git-completion.zsh" 1>&2
-	return
-fi
 
 __git_func_wrap ()
 {

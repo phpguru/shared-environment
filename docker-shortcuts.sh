@@ -1,5 +1,5 @@
 
-function docker_restart(){
+docker_restart(){
     osascript -e 'quit app "Docker"'
     open -a Docker
 }
@@ -79,7 +79,7 @@ dsto() {
 }
 
 # Docker start
-dsta() {
+docker_start_container() {
   if [[ $# == 0 ]]
     then
       echo "Which container? Provide 1 argument."
@@ -87,9 +87,10 @@ dsta() {
   fi
   docker start $1
 }
+alias dsta='docker_start_container'
 
 # Docker remove
-drm() {
+docker_remove_container() {
   if [[ $# == 0 ]]
     then
       echo "Which container? Provide 1 argument."
@@ -97,6 +98,7 @@ drm() {
   fi
   docker rm $1
 }
+alias drm='docker_remove_container'
 
 docker_take_down(){
   if [[ $# == 0 ]]
@@ -194,26 +196,26 @@ docker_mysql() {
 alias dmysql='docker_mysql'
 
 # Soft Start Docker app
-function docker_up()
+docker_up()
 {
     denv up
 }
 alias dup='docker_up'
 
-function docker_down()
+docker_down()
 {
     denv down
 }
 alias ddn='docker_down'
 
-function docker_reset()
+docker_reset()
 {
     docker-down
     docker-up
 }
 alias dre='docker_reset'
 
-function denv ()
+denv ()
 {
   if [[ $# == 0 ]]
     then
@@ -246,7 +248,7 @@ function denv ()
 
 }
 
-function docker_build_up {
+docker_build_up() {
     cd ${DOCKER_HOME}
     export COMPOSE_PROJECT_NAME='dolceclock'
     docker-compose up --build --force-recreate -d
@@ -276,7 +278,7 @@ dri() {
 }
 
 # remove all images
-function docker_rmi_all(){
+docker_rmi_all(){
   read -p "Are you sure you want to nuke your docker environment completely? <y/N> " prompt
   if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
   then
@@ -289,21 +291,21 @@ function docker_rmi_all(){
 alias drmi='docker_rmi_all'
 
 # remove untagged images
-function di_rmi_untagged()
+di_rmi_untagged()
 {
   docker rmi $(docker images -q --filter "dangling=true") --force
 }
 alias drirmu='di_rmi_untagged'
 
 # list all images
-function docker_image_list()
+docker_image_list()
 {
   docker images
 }
 alias dii='docker_image_list'
 alias dil='docker_image_list'
 
-function docker_remove_all_none_images()
+docker_remove_all_none_images()
 {
    docker images | grep '<none>' | awk -F' ' '{print $3}' | xargs docker rmi
 }
@@ -313,7 +315,7 @@ alias drani='docker_remove_all_none_images'
 ### Containers ################################################################
 
 # wipe all containers
-function docker_container_remove_all()
+docker_container_remove_all()
 {
   read -p "Are you sure you want to kill all your Docker containers? <y/N> " prompt
   if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]
@@ -326,7 +328,7 @@ function docker_container_remove_all()
 alias dcrma='docker_container_remove_all'
 
 # remove all stopped containers
-function docker_remove_stopped(){
+docker_remove_stopped(){
   docker rm $(docker ps -a | grep Exited | awk '{print $1}')
 }
 alias dcrms='docker_remove_stopped'
@@ -334,12 +336,12 @@ alias dcrms='docker_remove_stopped'
 
 ### Volumes ###################################################################
 
-function docker_volume_list(){
+docker_volume_list(){
     docker volume ls
 }
 alias dvl='docker_volume_list'
 
-function docker_volume_remove(){
+docker_volume_remove(){
     if [ $# -eq 0 ]; then
         echo "docker_volume_remove requires 1 arg"
     else
@@ -348,12 +350,12 @@ function docker_volume_remove(){
 }
 alias dvr='docker_volume_remove'
 
-function docker_volume_remove_dangling(){
+docker_volume_remove_dangling(){
     docker volume ls -f "dangling=true" | xargs docker volume rm
 }
 alias dvrd='docker_volume_remove_dangling'
 
-function docker_volume_prune(){
+docker_volume_prune(){
     docker volume prune
 }
 alias dvp='docker_volume_prune'
@@ -361,18 +363,18 @@ alias dvp='docker_volume_prune'
 
 ## Networking ##################################################################
 
-function docker_network_list(){
+docker_network_list(){
     docker network list
 }
 alias dnl='docker_network_list'
 
-function docker_network_remove(){
+docker_network_remove(){
     docker network rm $1
 }
 alias dnr='docker_network_remove'
 
 
-function docker_show_ports() {
+docker_show_ports() {
     if [ $# -eq 0 ]; then
         echo "   error: docker_show_ports requires 1 arg"
         echo "   usage: dsp <container>"
@@ -395,27 +397,27 @@ alias dsp='docker_show_ports'
 
 ### Miscellaneous ###################################################################
 
-function docker_build_oe(){
+docker_build_oe(){
     docker-compose -f docker-compose.tim.yml build
 }
 alias dboe='docker_build_oe'
 
-function docker_run_oe(){
+docker_run_oe(){
     docker-compose -f docker-compose.tim.yml up -d
 }
 alias droe='docker_run_oe'
 
-function docker_logs(){
+docker_logs(){
     docker logs $1
 }
 alias dlg='docker_logs'
 
-function docker_logs_follow(){
+docker_logs_follow(){
     docker logs $1 --follow
 }
 alias dlf='docker_logs_follow'
 
-function docker_logs_grep(){
+docker_logs_grep(){
     if [ $# -ne 2 ]; then
         echo "   error: docker_logs_grep requires 2 args"
         echo "   usage: dlgr <container> <grepfor>"
@@ -428,7 +430,7 @@ alias dlgr='docker_logs_grep'
 
 
 # From https://forums.docker.com/t/how-can-i-list-tags-for-a-repository/32577/8
-function docker_list_all_tags() { 
+docker_list_all_tags() { 
     local repo=${1} 
     local page_size=${2:-100} 
     [ -z "${repo}" ] && echo "Usage: listTags <repoName> [page_size]" 1>&2 && return 1 
@@ -462,4 +464,3 @@ PGADMIN_DEFAULT_PASSWORD=P@55w0rd
 
 
 echo "Shared Environment: Docker shortcuts loaded."
-
