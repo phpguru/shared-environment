@@ -31,6 +31,7 @@ function git_amend_last_commit_message_and_push() {
 
 alias gp='git_add_all_commit_and_push'
 alias gs='git status'
+alias gss='git ls-files --others --exclude-standard -t'
 alias gl='git log --pretty --oneline'
 alias gln='gl -n $1'
 alias gd='git diff'
@@ -107,12 +108,12 @@ function git_pull(){
 alias gpu='git_pull'
 
 function git_branch_prune(){
-    git fetch -p ; git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs git branch -d
+    git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d
 }
 alias gpr='git_branch_prune'
 
 function git_branch_prune_force(){
-    git fetch -p ; git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs git branch -D
+    git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
 }
 alias gprf='git_branch_prune_force'
 
@@ -382,8 +383,50 @@ alias gcm='git checkout main'
 alias gcmr='git checkout master'
 
 
+# -----------------------------
+# Git Log Files (A/M/D)
+# Usage: glf [N]
+# -----------------------------
+git_log_files() {
+    local N
 
+    if [ -n "$1" ]; then
+        N="$1"
+    else
+        read -p "How many commits back? " N
+    fi
 
+    if ! [[ "$N" =~ ^[0-9]+$ ]]; then
+        echo "❌ Please provide a valid positive number."
+        return 1
+    fi
+
+    git log -n "$N" --name-status --pretty=format: | sed '/^$/d'
+}
+
+alias glf='git_log_files'
+
+# -----------------------------
+# Git Log Commit Messages
+# Usage: glc [N]
+# -----------------------------
+git_log_messages() {
+    local N
+
+    if [ -n "$1" ]; then
+        N="$1"
+    else
+        read -p "How many commits back? " N
+    fi
+
+    if ! [[ "$N" =~ ^[0-9]+$ ]]; then
+        echo "❌ Please provide a valid positive number."
+        return 1
+    fi
+
+    git log -n "$N" --pretty=format:"%h %s"
+}
+alias glm='git_log_messages'
 
 
 
